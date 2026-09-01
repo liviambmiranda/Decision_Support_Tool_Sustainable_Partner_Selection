@@ -1,10 +1,5 @@
 -r requirements.txt
 
-# Test runner. The test files also run standalone as scripts, so this is only
-# needed to run the whole suite at once.
+# Test runner. tests/smoke_test.py also runs standalone as a script, so this is
+# only needed for tests/test_prompt_sensitivity.py.
 pytest>=9.1.0
-
-# Reference implementation the agreement tests check our Krippendorff alpha
-# against. A test dependency only: nothing under src/ imports it, so installing
-# requirements.txt alone still gives a working application.
-krippendorff>=0.8.0

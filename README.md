@@ -84,6 +84,13 @@ Notes that decide how a record is treated:
 - Everything the pipeline writes also lands under `data/`, and `.gitignore`
   keeps the whole directory out of version control.
 
+One further file is *derived*, not supplied:
+`data/eval/qualitative_consensus_scores.json` holds the aggregated qualitative
+ratings FlowSort reads when no explicit path is given. Step 3 below produces it
+under another name; the two sensitivity analyses never need it, because each
+passes its own score file explicitly, but the MCP server's default FlowSort run
+and the tests do.
+
 ## Study configuration
 
 Fixed values, all defined in code rather than passed on the command line.
@@ -143,6 +150,10 @@ data, the prompts and the number of calls the collection will make.
 .venv312/bin/python scripts/run_prompt_sensitivity.py scope
 ```
 
+On the study dataset this is 18 units x 4 prompts x 4 models x 100 iterations =
+28,800 calls, days of wall-clock time on a local machine. `scope` prints the
+estimate for your own data before you commit to it.
+
 **2. Collect the ratings.** Appends to
 `data/prompt_sensitivity/llm_ratings_by_prompt.jsonl` and resumes from whatever
 is already on disk, so an interrupted run is restarted with the same command.
@@ -158,6 +169,14 @@ whose collections are incomplete, since they would rest on different samples.
 
 ```bash
 .venv312/bin/python scripts/run_prompt_sensitivity.py report
+```
+
+**3b. Wire the baseline consensus in.** Only needed to run the MCP server or the
+tests; the analyses below do not read it. The two files have the same schema, so
+the `prompt_1` medians are the baseline FlowSort input by construction.
+
+```bash
+mkdir -p data/eval && cp data/prompt_sensitivity/json/consensus/qualitative_consensus_prompt_1.json data/eval/qualitative_consensus_scores.json
 ```
 
 **4. Classify per model as well as per prompt.** Writes the per-series
@@ -218,12 +237,17 @@ sensitivity tools:
 .venv312/bin/python server.py
 ```
 
-`client.py` is a command-line MCP client for the same server.
+`client.py` is a command-line MCP client for the same server. FlowSort needs the
+qualitative ratings to exist before it can classify: either
+`data/eval/qualitative_consensus_scores.json` from step 3b, or an `llm_config`
+passed to the qualification tool, which scores the disclosures live with the
+same prompt.
 
 ## Tests
 
-Both suites read the datasets, so `data/` has to be populated first. No LLM call
-and no Ollama instance is needed: the ratings are stubbed.
+Both suites read the datasets, so `data/` has to be populated first, including
+`data/eval/qualitative_consensus_scores.json` from step 3b. No LLM call and no
+Ollama instance is needed: the ratings are stubbed.
 
 `tests/test_prompt_sensitivity.py` covers the prompt analysis — median
 aggregation, the provenance guard on an edited prompt, resuming a collection,
