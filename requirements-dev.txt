@@ -1,5 +1,0 @@
--r requirements.txt
-
-# Test runner. tests/smoke_test.py also runs standalone as a script, so this is
-# only needed for tests/test_prompt_sensitivity.py.
-pytest>=9.1.0
