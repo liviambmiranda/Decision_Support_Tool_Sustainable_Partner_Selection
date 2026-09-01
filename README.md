@@ -38,8 +38,8 @@ categories: **C1 Leader**, **C2 Average**, **C3 Laggard**.
 
 ```mermaid
 flowchart LR
-    A["📋 SASB criteria<br/> ESG Criteria and sub-criteria"] --> B["⚖️ Decision-makers' judgements<br/>GH-FBWM weights"]
-    C["🏭 Company reports"] --> D["🔢 Quantitative criteria<br/>normalised by revenue"]
+    A["📋 SASB standard<br/> ESG criteria and sub-criteria"] --> B["⚖️ Decision-makers' judgements<br/>GH-FBWM weights"]
+    C["🏭 Company sustainability reports"] --> D["🔢 Quantitative criteria<br/>normalized by revenue"]
     C --> E["💬 Qualitative criteria<br/>rated 1-5 by 4 local LLMs"]
     B --> F["🗂️ FlowSort"]
     D --> F
@@ -109,7 +109,7 @@ ollama pull llama3.1:8b && ollama pull qwen3.5:9b && ollama pull deepseek-v2:16b
 
 ---
 
-## 📁 The data you provide
+## 📁 Data to provide
 
 No company data is distributed with this repository. Create a folder named
 `data/` in the project root and put these five files in it. Each is a JSON file
@@ -143,7 +143,7 @@ containing a list of records — plain text you can open in any editor.
 
 ---
 
-## 💬 The prompts
+## 💬 Prompts
 
 The four prompt texts live in
 `src/decision_support_mcp/rating_evaluation/prompt_sensitivity_prompts.py`
@@ -157,7 +157,7 @@ The four prompt texts live in
 Run these in order from the project folder, with Ollama running.
 
 
-**1️⃣ Collect the AI ratings.** ⏳ 
+**1️⃣ Collect the qualitative ratings.** ⏳ 
 
 ```bash
 .venv312/bin/python scripts/run_prompt_sensitivity.py collect
@@ -170,7 +170,7 @@ each prompt, and measures how much the prompts disagree.
 .venv312/bin/python scripts/run_prompt_sensitivity.py report
 ```
 
-**3️⃣ Classify per model as well as per prompt.** 
+**3️⃣ Classify per LLM as well as per prompt.** 
 
 ```bash
 .venv312/bin/python scripts/run_flowsort_by_model.py
