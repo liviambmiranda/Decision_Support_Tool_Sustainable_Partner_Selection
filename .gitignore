@@ -1,0 +1,11 @@
+.venv/
+.venv312/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+
+# Datasets and every analysis output are kept out of the repository.
+# See "Input data" in README.md for the files that have to be provided.
+data/*
+!data/.gitkeep

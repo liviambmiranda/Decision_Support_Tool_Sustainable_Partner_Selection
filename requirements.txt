@@ -1,0 +1,6 @@
+mcp>=1.27.0
+numpy>=2.4.0
+scipy>=1.17.0
+starlette>=1.0.0
+uvicorn>=0.45.0
+pydantic>=2.0.0
